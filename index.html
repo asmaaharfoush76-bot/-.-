@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,228 +8,155 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header class="navbar">
+<!-- ================= HEADER ================= -->
 
-  <div class="nav-container">
+<header class="header">
 
-    <div class="logo" onclick="showPage('home')">
-      <span class="logo-symbol">Φ</span>
-      <div>
-        <strong>PHOTON</strong>
-        <small>فوتون</small>
-      </div>
+  <div class="brand">
+    <div class="photon-icon">✦</div>
+
+    <div>
+      <div class="brand-en">PHOTON</div>
+      <div class="brand-ar">فوتون</div>
     </div>
+  </div>
 
-    <nav class="nav-links">
+  <nav class="nav">
 
-      <a href="#" data-page="home" class="active">الرئيسية</a>
-      <a href="#" data-page="subjects">المواد</a>
-      <a href="#" data-page="library">المكتبة</a>
-      <a href="#" data-page="exams">الاختبارات</a>
-      <a href="#" data-page="dashboard">لوحتي</a>
-      <a href="#" data-page="about">عن فوتون</a>
+    <a href="#home" class="active">الرئيسية</a>
 
-      <a href="#" data-page="admin" id="adminNavLink" style="display:none;">
-        👑 الإدارة
-      </a>
+    <a href="#subjects">المواد</a>
 
-    </nav>
+    <a href="#library">المكتبة</a>
 
-    <div class="nav-actions">
+    <a href="#exams">الامتحانات</a>
 
-      <button class="login-btn" onclick="openLogin()">
-        دخول
-      </button>
+    <a href="#dashboard">لوحتي</a>
 
-      <button class="menu-btn" id="menuBtn">
-        ☰
-      </button>
+    <a href="#about">عن فوتون</a>
 
-    </div>
+  </nav>
+
+  <div class="header-actions">
+
+    <button id="loginBtn" class="login-btn">
+      ⇥ تسجيل الدخول
+    </button>
+
+    <button id="logoutBtn" class="logout-btn hidden">
+      تسجيل الخروج
+    </button>
 
   </div>
 
 </header>
 
 
-<main>
+<!-- ================= HERO ================= -->
 
-<!-- ================= HOME ================= -->
+<section id="home" class="hero">
 
-<section id="home" class="page active-page">
+  <div class="hero-content">
 
-  <div class="hero">
+    <span class="hero-label">PHOTON • BACCALAUREATE</span>
 
-    <div class="hero-content">
+    <h1>
+      تعلم أذكى..
+      <span>اصنع مستقبلك.</span>
+    </h1>
 
-      <div class="section-label">
-        الصف الثاني بكالوريا • مسار طب وعلوم حياة
-      </div>
+    <p>
+      PHOTON فوتون هي مساحتك التعليمية الحديثة التي تجمع بين
+      الفهم والتدريب المنظم، والمتابعة في مكان واحد،
+      مصممة خصيصًا لمساعدتك على الوصول للهدف.
+    </p>
 
-      <h1>
-        افهم أكثر.
-        <span>تعلّم أذكى.</span>
-        اصنع مستقبلك.
-      </h1>
+    <div class="hero-buttons">
 
-      <p>
-        منصة فوتون التعليمية تجمع لك التعلم،
-        المراجعة، الاختبارات، وتتبع تقدمك في مكان واحد.
-      </p>
+      <button class="primary-btn" onclick="scrollToSection('subjects')">
+        ابدأ التعلم
+      </button>
 
-      <div class="hero-buttons">
-
-        <button class="primary-btn" onclick="showPage('subjects')">
-          ابدأ التعلم
-        </button>
-
-        <button class="secondary-btn" onclick="showPage('about')">
-          اكتشف فوتون
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="hero-visual">
-
-      <div class="photon-orb">
-        <span>Φ</span>
-      </div>
-
-      <div class="floating-card card-one">
-        ⚡ فيزياء
-      </div>
-
-      <div class="floating-card card-two">
-        🧠 تعلّم
-      </div>
-
-      <div class="floating-card card-three">
-        🏆 إنجاز
-      </div>
+      <button class="outline-btn" onclick="scrollToSection('about')">
+        اكتشف فوتون
+      </button>
 
     </div>
 
   </div>
 
 
-  <div class="quick-section">
+  <div class="hero-circle">
 
-    <div class="section-title">
-      <div>
-        <span class="section-label">الوصول السريع</span>
-        <h2>كل اللي تحتاجه في مكان واحد</h2>
-      </div>
+    <div class="circle-main">
+
+      <span>PHOTON</span>
+
+      <strong id="heroProgress">0%</strong>
+
+      <small>تقدمك الحالي</small>
+
     </div>
 
+    <div class="floating-badge">
+      <strong>4</strong>
+      مواد دراسية
+    </div>
 
-    <div class="quick-grid">
+  </div>
 
-      <div class="quick-card" onclick="showPage('subjects')">
-        <div class="quick-icon">📚</div>
+</section>
+
+
+<!-- ================= SHORTCUTS ================= -->
+
+<section class="section">
+
+  <div class="shortcut-grid">
+
+    <div class="shortcut-card" onclick="scrollToSection('subjects')">
+      <div class="shortcut-icon">＋</div>
+      <div>
+        <span>جديد</span>
         <h3>المواد الدراسية</h3>
-        <p>ابدأ دروسك وتابع تقدمك.</p>
+        <p>ابدأ رحلة التعلم</p>
       </div>
+    </div>
 
-      <div class="quick-card" onclick="showPage('library')">
-        <div class="quick-icon">📖</div>
+
+    <div class="shortcut-card" onclick="scrollToSection('library')">
+      <div class="shortcut-icon">▣</div>
+      <div>
         <h3>المكتبة</h3>
-        <p>ملخصات ومصادر للمراجعة.</p>
+        <p>كتب ومصادر إضافية</p>
       </div>
+    </div>
 
-      <div class="quick-card" onclick="showPage('exams')">
-        <div class="quick-icon">📝</div>
-        <h3>الاختبارات</h3>
-        <p>اختبر فهمك وطوّر مستواك.</p>
+
+    <div class="shortcut-card" onclick="scrollToSection('exams')">
+      <div class="shortcut-icon">✓</div>
+      <div>
+        <h3>الامتحانات</h3>
+        <p>اختبارات لمستواك</p>
       </div>
+    </div>
 
-      <div class="quick-card" onclick="showPage('dashboard')">
-        <div class="quick-icon">📊</div>
+
+    <div class="shortcut-card" onclick="scrollToSection('dashboard')">
+      <div class="shortcut-icon">◉</div>
+      <div>
         <h3>لوحتي</h3>
-        <p>تابع نقاطك وإنجازاتك.</p>
+        <p>تتبع تقدمك</p>
       </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="subjects-preview">
-
-    <div class="section-title">
-      <div>
-        <span class="section-label">المواد</span>
-        <h2>اختار المادة وابدأ</h2>
-      </div>
-    </div>
-
-
-    <div class="subject-grid">
-
-      <div class="subject-card" onclick="openSubject('physics')">
-        <div class="subject-icon">Φ</div>
-        <span>12 درس</span>
-        <h3>الفيزياء</h3>
-        <p>العلوم الفيزيائية</p>
-        <button>فتح المادة ←</button>
-      </div>
-
-
-      <div class="subject-card" onclick="openSubject('history')">
-        <div class="subject-icon">⌘</div>
-        <span>10 دروس</span>
-        <h3>التاريخ الوطني</h3>
-        <p>المجال الإنساني</p>
-        <button>فتح المادة ←</button>
-      </div>
-
-
-      <div class="subject-card" onclick="openSubject('english')">
-        <div class="subject-icon">Aa</div>
-        <span>14 درس</span>
-        <h3>اللغة الإنجليزية</h3>
-        <p>Language</p>
-        <button>فتح المادة ←</button>
-      </div>
-
-
-      <div class="subject-card" onclick="openSubject('arabic')">
-        <div class="subject-icon">ع</div>
-        <span>15 درس</span>
-        <h3>اللغة العربية</h3>
-        <p>اللغة والأدب</p>
-        <button>فتح المادة ←</button>
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="progress-section">
-
-    <div class="progress-box">
-
-      <div>
-        <span class="section-label">تقدمك</span>
-        <h2>استمر، أنت بتتقدم 👏</h2>
-        <p>كل درس بتكمله بيقربك من هدفك.</p>
-      </div>
-
-      <div class="progress-circle" id="homeProgress">
-        0%
-      </div>
-
     </div>
 
   </div>
@@ -240,59 +166,63 @@
 
 <!-- ================= SUBJECTS ================= -->
 
-<section id="subjects" class="page">
+<section id="subjects" class="section">
 
-  <div class="page-header">
-    <span class="section-label">التعلم</span>
-    <h1>المواد الدراسية</h1>
-    <p>اختار المادة وابدأ رحلة التعلم.</p>
-  </div>
+  <div class="section-heading">
 
-
-  <div class="subject-grid">
-
-    <div class="subject-card" onclick="openSubject('physics')">
-      <div class="subject-icon">Φ</div>
-      <span>12 درس</span>
-      <h3>الفيزياء</h3>
-      <p>العلوم الفيزيائية</p>
-      <button>فتح المادة ←</button>
+    <div>
+      <span>LEARN</span>
+      <h2>المواد الدراسية</h2>
     </div>
 
-    <div class="subject-card" onclick="openSubject('history')">
-      <div class="subject-icon">⌘</div>
-      <span>10 دروس</span>
-      <h3>التاريخ الوطني</h3>
-      <p>المجال الإنساني</p>
-      <button>فتح المادة ←</button>
-    </div>
-
-    <div class="subject-card" onclick="openSubject('english')">
-      <div class="subject-icon">Aa</div>
-      <span>14 درس</span>
-      <h3>اللغة الإنجليزية</h3>
-      <p>Language</p>
-      <button>فتح المادة ←</button>
-    </div>
-
-    <div class="subject-card" onclick="openSubject('arabic')">
-      <div class="subject-icon">ع</div>
-      <span>15 درس</span>
-      <h3>اللغة العربية</h3>
-      <p>اللغة والأدب</p>
-      <button>فتح المادة ←</button>
-    </div>
+    <p>
+      أربع مواد أساسية مصممة لتساعدك على الفهم والتدريب.
+    </p>
 
   </div>
 
 
-  <div class="lessons-box">
+  <div id="subjectsGrid" class="subjects-grid"></div>
 
-    <div class="section-title">
-      <h2>الدروس</h2>
+</section>
+
+
+<!-- ================= JOURNEY ================= -->
+
+<section class="journey section">
+
+  <div class="journey-card">
+
+    <div class="progress-circle">
+      <strong id="progressNumber">0%</strong>
     </div>
 
-    <div id="lessonsList"></div>
+    <div class="journey-text">
+
+      <span>رحلتك التعليمية</span>
+
+      <h2>كل خطوة صغيرة.. تقربك من هدفك.</h2>
+
+      <p>
+        تابع دروسك واختباراتك وشاهد تطورك باستمرار.
+      </p>
+
+      <button class="primary-btn" onclick="scrollToSection('dashboard')">
+        افتح لوحتي
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="start-card">
+
+    <span>ابدأ من هنا</span>
+
+    <h2>آخر الدروس</h2>
+
+    <div id="recentLessons"></div>
 
   </div>
 
@@ -301,264 +231,104 @@
 
 <!-- ================= LIBRARY ================= -->
 
-<section id="library" class="page">
+<section id="library" class="section">
 
-  <div class="page-header">
-    <span class="section-label">المصادر</span>
-    <h1>المكتبة</h1>
-    <p>ملخصات ومصادر تساعدك في المراجعة.</p>
+  <div class="section-heading">
+
+    <div>
+      <span>LIBRARY</span>
+      <h2>المكتبة</h2>
+    </div>
+
+    <p>
+      كتب ومؤلفات ومصادر تعليمية تساعدك في رحلتك.
+    </p>
+
   </div>
 
 
   <div class="search-box">
+
     <input
-      id="bookSearch"
+      id="librarySearch"
       type="search"
-      placeholder="ابحث عن كتاب أو ملخص..."
+      placeholder="ابحث عن كتاب أو مصدر..."
     >
+
   </div>
 
 
   <div class="filters">
 
     <button class="filter active" data-filter="all">الكل</button>
-    <button class="filter" data-filter="physics">فيزياء</button>
-    <button class="filter" data-filter="history">تاريخ</button>
-    <button class="filter" data-filter="english">إنجليزي</button>
-    <button class="filter" data-filter="arabic">عربي</button>
+    <button class="filter" data-filter="physics">الفيزياء</button>
+    <button class="filter" data-filter="history">التاريخ الوطني</button>
+    <button class="filter" data-filter="english">الإنجليزية</button>
+    <button class="filter" data-filter="arabic">العربية</button>
 
   </div>
 
 
-  <div class="books-grid" id="booksGrid">
-
-    <div class="book-card" data-subject="physics" data-title="ملخص أساسيات الفيزياء">
-      <div class="book-icon">Φ</div>
-      <h3>ملخص أساسيات الفيزياء</h3>
-      <p>ملخص تعليمي</p>
-      <button onclick="openResource('ملخص أساسيات الفيزياء')">فتح</button>
-    </div>
-
-    <div class="book-card" data-subject="history" data-title="ملخص التاريخ الوطني">
-      <div class="book-icon">⌘</div>
-      <h3>ملخص التاريخ الوطني</h3>
-      <p>ملخص تعليمي</p>
-      <button onclick="openResource('ملخص التاريخ الوطني')">فتح</button>
-    </div>
-
-    <div class="book-card" data-subject="english" data-title="Vocabulary List">
-      <div class="book-icon">Aa</div>
-      <h3>Vocabulary List</h3>
-      <p>English resource</p>
-      <button onclick="openResource('Vocabulary List')">فتح</button>
-    </div>
-
-    <div class="book-card" data-subject="arabic" data-title="ملخص النحو">
-      <div class="book-icon">ع</div>
-      <h3>ملخص النحو</h3>
-      <p>ملخص تعليمي</p>
-      <button onclick="openResource('ملخص النحو')">فتح</button>
-    </div>
-
-    <div class="book-card" data-subject="physics" data-title="ورقة القوانين المهمة">
-      <div class="book-icon">Σ</div>
-      <h3>ورقة القوانين المهمة</h3>
-      <p>فيزياء</p>
-      <button onclick="openResource('ورقة القوانين المهمة')">فتح</button>
-    </div>
-
-    <div class="book-card" data-subject="arabic" data-title="دليل البلاغة">
-      <div class="book-icon">ع</div>
-      <h3>دليل البلاغة</h3>
-      <p>لغة عربية</p>
-      <button onclick="openResource('دليل البلاغة')">فتح</button>
-    </div>
-
-  </div>
+  <div id="libraryGrid" class="library-grid"></div>
 
 </section>
 
 
 <!-- ================= EXAMS ================= -->
 
-<section id="exams" class="page">
+<section id="exams" class="section">
 
-  <div class="page-header">
-    <span class="section-label">اختبر نفسك</span>
-    <h1>الاختبارات</h1>
-    <p>قِس مستواك وطوّر نقاط ضعفك.</p>
-  </div>
+  <div class="section-heading">
 
-
-  <div class="exam-types">
-
-    <button class="exam-type active">تدريبات</button>
-    <button class="exam-type">نماذج امتحانات</button>
-    <button class="exam-type">امتحانات سابقة</button>
-
-  </div>
-
-
-  <div class="exam-grid">
-
-    <div class="exam-card">
-      <span>Φ</span>
-      <h3>اختبار الفيزياء</h3>
-      <p>3 أسئلة تدريبية</p>
-      <button onclick="startExam('physics')">ابدأ الاختبار</button>
-    </div>
-
-    <div class="exam-card">
-      <span>⌘</span>
-      <h3>اختبار التاريخ</h3>
-      <p>3 أسئلة تدريبية</p>
-      <button onclick="startExam('history')">ابدأ الاختبار</button>
-    </div>
-
-    <div class="exam-card">
-      <span>Aa</span>
-      <h3>اختبار الإنجليزية</h3>
-      <p>3 أسئلة تدريبية</p>
-      <button onclick="startExam('english')">ابدأ الاختبار</button>
-    </div>
-
-    <div class="exam-card">
-      <span>ع</span>
-      <h3>اختبار العربية</h3>
-      <p>3 أسئلة تدريبية</p>
-      <button onclick="startExam('arabic')">ابدأ الاختبار</button>
+    <div>
+      <span>TEST YOURSELF</span>
+      <h2>الامتحانات والتدريبات</h2>
     </div>
 
   </div>
 
 
-  <div class="tip-box">
-    💡 حاول تحل بنفسك قبل ما تدور على الإجابة.
+  <div class="exam-tabs">
+
+    <button class="exam-tab active">اختبارات تدريبية</button>
+    <button class="exam-tab">نماذج امتحانات</button>
+    <button class="exam-tab">امتحانات سابقة</button>
+
   </div>
+
+
+  <div id="examsGrid" class="exams-grid"></div>
 
 </section>
 
 
 <!-- ================= DASHBOARD ================= -->
 
-<section id="dashboard" class="page">
+<section id="dashboard" class="section dashboard-section">
 
-  <div class="page-header">
+  <div class="section-heading">
 
-    <span class="section-label">لوحة الطالب</span>
-
-    <h1>
-      أهلاً <span id="studentNameDisplay">يا بطل</span> 👋
-    </h1>
-
-    <p>تابع تقدمك وإنجازاتك.</p>
-
-  </div>
-
-
-  <div class="stats-grid">
-
-    <div class="stat-card">
-      <span>⭐</span>
-      <strong id="pointsValue">0</strong>
-      <small>النقاط</small>
-    </div>
-
-    <div class="stat-card">
-      <span>📚</span>
-      <strong id="lessonsValue">0</strong>
-      <small>الدروس</small>
-    </div>
-
-    <div class="stat-card">
-      <span>📝</span>
-      <strong id="examsValue">0</strong>
-      <small>الاختبارات</small>
-    </div>
-
-    <div class="stat-card">
-      <span>🏆</span>
-      <strong id="badgesValue">1</strong>
-      <small>الإنجازات</small>
+    <div>
+      <span>MY DASHBOARD</span>
+      <h2>لوحة الطالب</h2>
     </div>
 
   </div>
 
 
-  <div class="dashboard-grid">
+  <div id="dashboardContent">
 
-    <div class="dashboard-card">
+    <div class="login-required">
+      <h3>أهلاً بك في فوتون 👋</h3>
 
-      <span class="section-label">التقدم</span>
+      <p>
+        سجل الدخول لمشاهدة نقاطك ودروسك وشاراتك وتقدمك.
+      </p>
 
-      <h2 id="dashboardProgress">0%</h2>
-
-      <div class="progress-bar">
-        <span id="bigProgressBar"></span>
-      </div>
-
-      <p>استمر في إكمال الدروس للوصول إلى 100%.</p>
-
+      <button class="primary-btn" onclick="openLogin()">
+        تسجيل الدخول
+      </button>
     </div>
-
-
-    <div class="dashboard-card">
-
-      <span class="section-label">الإنجازات</span>
-
-      <div class="achievement unlocked">
-        <span>🚀</span>
-        <div>
-          <h3>بداية قوية</h3>
-          <p>أول خطوة في فوتون</p>
-        </div>
-      </div>
-
-      <div class="achievement" id="badgeLesson">
-        <span>📚</span>
-        <div>
-          <h3>متعلم نشيط</h3>
-          <p>أكمل 5 دروس</p>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="leaderboard-card">
-
-    <span class="section-label">المتصدرون</span>
-
-    <h2>لوحة الشرف</h2>
-
-    <div class="leader-row">
-      <span>1</span>
-      <strong>طالب فوتون</strong>
-      <b>1250 نقطة</b>
-    </div>
-
-    <div class="leader-row">
-      <span>2</span>
-      <strong>متعلم نشيط</strong>
-      <b>980 نقطة</b>
-    </div>
-
-    <div class="leader-row">
-      <span>3</span>
-      <strong>نجم فوتون</strong>
-      <b>750 نقطة</b>
-    </div>
-
-  </div>
-
-
-  <div class="profile-card">
-
-    <span class="section-label">الملف الشخصي</span>
-
-    <h2 id="profileName">طالب فوتون</h2>
 
   </div>
 
@@ -567,298 +337,165 @@
 
 <!-- ================= ABOUT ================= -->
 
-<section id="about" class="page">
+<section id="about" class="section about">
 
-  <div class="page-header">
+  <div class="about-content">
 
-    <span class="section-label">PHOTON</span>
+    <span>ABOUT PHOTON</span>
 
-    <h1>عن فوتون</h1>
+    <h2>
+      مش مجرد منصة...
+      <strong>دي طريقة جديدة للتعلم.</strong>
+    </h2>
 
     <p>
-      منصة تعليمية هدفها تخلي رحلة التعلم أوضح وأذكى.
+      جاءت فكرة فوتون من إيمان بسيط أن طالب الثانوية لديه القدرة
+      على الوصول، لكنه يحتاج إلى الطريق الصحيح.
     </p>
+
+    <div class="founder">
+      <strong>Asmaa Harfoush</strong>
+      <span>صاحبة فكرة فوتون</span>
+    </div>
 
   </div>
 
 
-  <div class="about-card">
+  <div class="philosophy">
 
-    <h2>فلسفة فوتون</h2>
+    <div>
+      <strong>01</strong>
+      <h3>افهم</h3>
+      <p>التركيز على الفهم أولاً وليس الحفظ.</p>
+    </div>
 
-    <p>
-      في فوتون، التعلم مش مجرد حفظ.
-      إحنا بنؤمن إن الفهم الحقيقي هو الأساس،
-      وإن كل خطوة صغيرة بتصنع فرق كبير.
-    </p>
+    <div>
+      <strong>02</strong>
+      <h3>تدرب</h3>
+      <p>تطبيق عملي مستمر.</p>
+    </div>
 
-  </div>
-
-
-  <div class="founder-card">
-
-    <span class="section-label">Founder</span>
-
-    <h2>أسماء حرفوش</h2>
-
-    <p>
-      مؤسسة فوتون، مهتمة بالفيزياء والطب وعلوم الحياة
-      والبرمجة، وتسعى لصناعة تجربة تعليمية مختلفة.
-    </p>
+    <div>
+      <strong>03</strong>
+      <h3>تقدم</h3>
+      <p>متابعة مستوى الطالب وتطوره.</p>
+    </div>
 
   </div>
 
 </section>
 
 
-<!-- ================= ADMIN ================= -->
+<!-- ================= FOOTER ================= -->
 
-<section id="admin" class="page">
+<footer>
 
-  <div class="page-header">
+  <div class="footer-brand">
 
-    <span class="section-label">ADMIN PANEL</span>
+    <div class="brand-en">PHOTON</div>
 
-    <h1>لوحة الإدارة 👑</h1>
-
-    <p>مرحبًا بكِ في لوحة تحكم فوتون.</p>
+    <p>شاركت معرفة... تصنع مستقبلك.</p>
 
   </div>
 
 
-  <div class="stats-grid">
+  <div>
 
-    <div class="stat-card">
-      <span>👥</span>
-      <strong id="adminStudents">0</strong>
-      <small>الطلاب</small>
-    </div>
+    <h4>فوتون</h4>
 
-    <div class="stat-card">
-      <span>⭐</span>
-      <strong id="adminPoints">0</strong>
-      <small>إجمالي النقاط</small>
-    </div>
-
-    <div class="stat-card">
-      <span>📚</span>
-      <strong id="adminLessons">0</strong>
-      <small>الدروس المكتملة</small>
-    </div>
-
-    <div class="stat-card">
-      <span>📝</span>
-      <strong id="adminExams">0</strong>
-      <small>الاختبارات</small>
-    </div>
+    <a href="#about">عن فوتون</a>
+    <a href="#">المساعدة</a>
+    <a href="#">تواصل معنا</a>
 
   </div>
 
 
-  <div class="admin-card">
+  <div>
 
-    <div class="section-title">
-      <div>
-        <span class="section-label">Students</span>
-        <h2>المشتركون</h2>
-      </div>
-    </div>
+    <h4>المنصة</h4>
 
-    <div id="adminStudentsList"></div>
+    <a href="#subjects">المواد الدراسية</a>
+    <a href="#library">المكتبة</a>
+    <a href="#exams">الامتحانات</a>
+    <a href="#dashboard">لوحتي</a>
 
   </div>
 
 
-  <div class="admin-card">
+  <div class="copyright">
 
-    <div class="section-title">
-      <div>
-        <span class="section-label">Control</span>
-        <h2>إدارة المنصة</h2>
-      </div>
-    </div>
+    <p>Designed & developed by Dr. Asmaa Harfoush</p>
 
-    <div class="admin-actions">
-
-      <button onclick="showToast('إضافة الدروس ستكون متاحة من لوحة الإدارة ✨')">
-        📚 إدارة الدروس
-      </button>
-
-      <button onclick="showToast('إدارة المصادر ستكون متاحة قريبًا ✨')">
-        📄 إدارة المصادر
-      </button>
-
-      <button onclick="showToast('إدارة الاختبارات ستكون متاحة قريبًا ✨')">
-        📝 إدارة الاختبارات
-      </button>
-
-      <button onclick="adminLogout()">
-        🚪 تسجيل خروج الأدمن
-      </button>
-
-    </div>
+    <p>PHOTON 2026 © جميع الحقوق محفوظة</p>
 
   </div>
 
-</section>
-
-</main>
-
-
-<!-- ================= SUBJECT MODAL ================= -->
-
-<div class="modal" id="subjectModal">
-
-  <div class="modal-box">
-
-    <button class="modal-close" onclick="closeModal('subjectModal')">
-      ×
-    </button>
-
-    <div class="modal-heading">
-
-      <div id="modalSubjectIcon"></div>
-
-      <div>
-        <span id="modalSubjectLabel"></span>
-        <h2 id="modalSubjectTitle"></h2>
-      </div>
-
-    </div>
-
-
-    <div class="modal-tabs">
-
-      <button class="modal-tab active" data-tab="lessons">
-        الدروس
-      </button>
-
-      <button class="modal-tab" data-tab="resources">
-        المصادر
-      </button>
-
-      <button class="modal-tab" data-tab="practice">
-        تدريب
-      </button>
-
-    </div>
-
-
-    <div id="subjectModalContent"></div>
-
-  </div>
-
-</div>
-
-
-<!-- ================= EXAM MODAL ================= -->
-
-<div class="modal" id="examModal">
-
-  <div class="modal-box">
-
-    <button class="modal-close" onclick="closeModal('examModal')">
-      ×
-    </button>
-
-    <div id="examContent"></div>
-
-  </div>
-
-</div>
+</footer>
 
 
 <!-- ================= LOGIN MODAL ================= -->
 
-<div class="modal" id="loginModal">
-
-  <div class="modal-box login-modal">
-
-    <button class="modal-close" onclick="closeModal('loginModal')">
-      ×
-    </button>
-
-    <span class="section-label">WELCOME TO PHOTON</span>
-
-    <h2>أهلاً بك 👋</h2>
-
-    <p>اكتب اسمك للبدء.</p>
-
-    <input
-      id="studentNameInput"
-      type="text"
-      placeholder="اسمك"
-      autocomplete="off"
-    >
-
-    <button class="primary-btn" onclick="saveStudent()">
-      دخول المنصة
-    </button>
-
-    <button class="admin-login-link" onclick="openAdminLogin()">
-      👑 دخول الأدمن
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- ================= ADMIN LOGIN ================= -->
-
-<div class="modal" id="adminLoginModal">
-
-  <div class="modal-box login-modal">
-
-    <button class="modal-close" onclick="closeModal('adminLoginModal')">
-      ×
-    </button>
-
-    <span class="section-label">ADMIN ACCESS</span>
-
-    <h2>دخول الأدمن 👑</h2>
-
-    <p>أدخلي بيانات الإدارة.</p>
-
-    <input
-      id="adminEmail"
-      type="email"
-      placeholder="البريد الإلكتروني"
-      autocomplete="username"
-    >
-
-    <input
-      id="adminPassword"
-      type="password"
-      placeholder="كلمة المرور"
-      autocomplete="current-password"
-    >
-
-    <button class="primary-btn" onclick="adminLogin()">
-      دخول لوحة الإدارة
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- ================= RESOURCE MODAL ================= -->
-
-<div class="modal" id="resourceModal">
+<div id="loginModal" class="modal">
 
   <div class="modal-box">
 
-    <button class="modal-close" onclick="closeModal('resourceModal')">
-      ×
-    </button>
+    <button class="close-modal" onclick="closeLogin()">×</button>
 
-    <span class="section-label">RESOURCE</span>
+    <div class="modal-title">
+      <div class="photon-icon">✦</div>
+      <h2>تسجيل الدخول</h2>
+      <p>ادخل إلى عالم فوتون</p>
+    </div>
 
-    <h2 id="resourceTitle"></h2>
 
-    <div class="resource-placeholder">
-      📄 سيتم ربط الملف هنا من لوحة الإدارة.
+    <form id="loginForm">
+
+      <label>البريد الإلكتروني</label>
+
+      <input
+        id="email"
+        type="email"
+        required
+        placeholder="example@email.com"
+      >
+
+
+      <label>الاسم الثلاثي</label>
+
+      <input
+        id="fullName"
+        type="text"
+        placeholder="الاسم الثلاثي"
+      >
+
+
+      <label>كلمة المرور</label>
+
+      <input
+        id="password"
+        type="password"
+        required
+        placeholder="••••••••"
+      >
+
+
+      <button class="primary-btn full-btn" type="submit">
+        تسجيل الدخول
+      </button>
+
+      <p id="loginMessage" class="form-message"></p>
+
+    </form>
+
+
+    <div class="switch-auth">
+
+      ليس لديك حساب؟
+
+      <button onclick="showSignup()">
+        إنشاء حساب
+      </button>
+
     </div>
 
   </div>
@@ -866,24 +503,159 @@
 </div>
 
 
-<!-- ================= TOAST ================= -->
+<!-- ================= SIGNUP MODAL ================= -->
 
-<div class="toast" id="toast">
-  <span id="toastMessage"></span>
+<div id="signupModal" class="modal">
+
+  <div class="modal-box">
+
+    <button class="close-modal" onclick="closeSignup()">×</button>
+
+    <div class="modal-title">
+
+      <div class="photon-icon">✦</div>
+
+      <h2>إنشاء حساب</h2>
+
+      <p>ابدأ رحلتك في فوتون</p>
+
+    </div>
+
+
+    <form id="signupForm">
+
+      <label>الاسم الثلاثي</label>
+
+      <input
+        id="signupName"
+        type="text"
+        required
+        placeholder="اكتب اسمك الثلاثي"
+      >
+
+
+      <label>البريد الإلكتروني</label>
+
+      <input
+        id="signupEmail"
+        type="email"
+        required
+        placeholder="example@email.com"
+      >
+
+
+      <label>كلمة المرور</label>
+
+      <input
+        id="signupPassword"
+        type="password"
+        minlength="6"
+        required
+        placeholder="6 أحرف على الأقل"
+      >
+
+
+      <button class="primary-btn full-btn">
+        إنشاء الحساب
+      </button>
+
+      <p id="signupMessage" class="form-message"></p>
+
+    </form>
+
+  </div>
+
 </div>
 
 
-<footer>
+<!-- ================= LESSON MODAL ================= -->
 
-  <div class="footer-logo">
-    Φ PHOTON
+<div id="lessonModal" class="modal">
+
+  <div class="modal-box large">
+
+    <button class="close-modal" onclick="closeLesson()">×</button>
+
+    <div id="lessonContent"></div>
+
   </div>
 
-  <p>
-    منصة فوتون التعليمية © 2026
-  </p>
+</div>
 
-</footer>
+
+<!-- ================= ADMIN PANEL ================= -->
+
+<div id="adminPanel" class="admin-panel hidden">
+
+  <div class="admin-header">
+
+    <div>
+
+      <span>PHOTON ADMIN</span>
+
+      <h2>لوحة تحكم الأدمن</h2>
+
+    </div>
+
+    <button onclick="closeAdmin()">×</button>
+
+  </div>
+
+
+  <div class="admin-body">
+
+    <aside class="admin-sidebar">
+
+      <button class="admin-nav active" data-admin="overview">
+        📊 الرئيسية
+      </button>
+
+      <button class="admin-nav" data-admin="students">
+        👨‍🎓 الطلاب
+      </button>
+
+      <button class="admin-nav" data-admin="subjects">
+        📚 المواد
+      </button>
+
+      <button class="admin-nav" data-admin="lessons">
+        📝 الدروس
+      </button>
+
+      <button class="admin-nav" data-admin="library">
+        📖 المكتبة
+      </button>
+
+      <button class="admin-nav" data-admin="exams">
+        🧪 الامتحانات
+      </button>
+
+    </aside>
+
+
+    <main class="admin-main">
+
+      <div id="adminContent"></div>
+
+    </main>
+
+  </div>
+
+</div>
+
+
+<!-- ================= ADMIN BUTTON ================= -->
+
+<button
+  id="adminFloatingBtn"
+  class="admin-floating hidden"
+  onclick="openAdmin()"
+>
+  ⚙ الأدمن
+</button>
+
+
+<div id="toast" class="toast"></div>
 
 
 <script src="script.js"></script>
