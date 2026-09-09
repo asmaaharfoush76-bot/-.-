@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,467 +14,746 @@
 
 <body>
 
-    <!-- ================= HEADER ================= -->
-    <header class="header">
+<header class="header">
+
+    <div class="container header-content">
+
+        <div class="logo">
+            <span class="logo-icon">⚡</span>
+
+            <div>
+                <h2>PHOTON</h2>
+                <span>فوتون</span>
+            </div>
+        </div>
+
+        <nav class="nav-links">
+
+            <a href="#" class="active" data-page="home">
+                الرئيسية
+            </a>
+
+            <a href="#" data-page="subjects">
+                المواد
+            </a>
+
+            <a href="#" data-page="library">
+                المكتبة
+            </a>
+
+            <a href="#" data-page="exams">
+                الامتحانات
+            </a>
+
+            <a href="#" data-page="dashboard">
+                لوحتي
+            </a>
+
+            <a href="#" data-page="about">
+                عن فوتون
+            </a>
+
+            <a href="#" id="adminNavLink" data-page="admin" class="admin-link">
+                الأدمن
+            </a>
+
+        </nav>
+
+        <button class="login-btn" onclick="openLoginModal()">
+            تسجيل الدخول
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- ================= HOME ================= -->
+
+<main id="home" class="page active-page">
+
+    <section class="hero">
+
         <div class="container">
 
-            <div class="logo">
-                <span class="logo-icon">⚡</span>
-                <div>
-                    <h2>PHOTON</h2>
+            <div class="hero-content">
+
+                <span class="section-label">
+                    منصة تعليمية متكاملة ⚡
+                </span>
+
+                <h1>
+                    مستقبلك يبدأ من
                     <span>فوتون</span>
+                </h1>
+
+                <p>
+                    منصة تعليمية مصممة لمساعدتك على التعلم،
+                    المراجعة، وحل الامتحانات بطريقة منظمة وسهلة.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <button
+                        class="primary-btn"
+                        onclick="showPage('subjects')">
+
+                        ابدأ التعلم الآن 🚀
+
+                    </button>
+
+                    <button
+                        class="secondary-btn"
+                        onclick="showPage('about')">
+
+                        اكتشف فوتون
+
+                    </button>
+
                 </div>
+
             </div>
-
-            <nav class="nav-links">
-
-                <a href="#" class="active" data-page="home">
-                    الرئيسية
-                </a>
-
-                <a href="#" data-page="subjects">
-                    المواد
-                </a>
-
-                <a href="#" data-page="library">
-                    المكتبة
-                </a>
-
-                <a href="#" data-page="exams">
-                    الامتحانات
-                </a>
-
-                <a href="#" data-page="dashboard">
-                    لوحتي
-                </a>
-
-                <a href="#" data-page="about">
-                    عن فوتون
-                </a>
-
-                <!-- الأدمن مخفي للطلاب -->
-                <a href="#" data-page="admin" id="adminNavLink" style="display:none;">
-                    الأدمن
-                </a>
-
-            </nav>
-
-            <button class="login-btn" onclick="openLoginModal()">
-                تسجيل الدخول
-            </button>
 
         </div>
-    </header>
+
+    </section>
 
 
-    <!-- ================= HOME ================= -->
-    <main id="home" class="page">
+    <section class="section">
 
-        <section class="hero">
+        <div class="container">
 
-            <div class="container">
-
-                <div class="hero-content">
-
-                    <span class="section-label">
-                        منصة تعليمية متكاملة
-                    </span>
-
-                    <h1>
-                        مستقبلك يبدأ من
-                        <span>فوتون</span>
-                    </h1>
-
-                    <p>
-                        منصة تعليمية مصممة لمساعدتك على التعلم،
-                        المراجعة، وحل الامتحانات بطريقة منظمة وسهلة.
-                    </p>
-
-                    <div class="hero-buttons">
-
-                        <button class="primary-btn"
-                                onclick="showPage('subjects')">
-                            ابدأ التعلم الآن 🚀
-                        </button>
-
-                        <button class="secondary-btn"
-                                onclick="showPage('about')">
-                            اكتشف فوتون
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <section class="section">
-
-            <div class="container">
-
-                <div class="section-title">
-
-                    <span class="section-label">
-                        ماذا نقدم؟
-                    </span>
-
-                    <h2>
-                        كل اللي تحتاجه في مكان واحد
-                    </h2>
-
-                </div>
-
-
-                <div class="features-grid">
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">
-                            📚
-                        </div>
-
-                        <h3>
-                            المواد الدراسية
-                        </h3>
-
-                        <p>
-                            محتوى منظم يساعدك على فهم ومراجعة المواد.
-                        </p>
-
-                    </div>
-
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">
-                            📝
-                        </div>
-
-                        <h3>
-                            الامتحانات
-                        </h3>
-
-                        <p>
-                            اختبر نفسك وتابع مستواك باستمرار.
-                        </p>
-
-                    </div>
-
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">
-                            📖
-                        </div>
-
-                        <h3>
-                            المكتبة
-                        </h3>
-
-                        <p>
-                            مراجع وملفات تساعدك أثناء رحلتك التعليمية.
-                        </p>
-
-                    </div>
-
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">
-                            📊
-                        </div>
-
-                        <h3>
-                            لوحتك الشخصية
-                        </h3>
-
-                        <p>
-                            تابع تقدمك وإنجازاتك من مكان واحد.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- ================= SUBJECTS ================= -->
-    <main id="subjects" class="page" style="display:none;">
-
-        <section class="page-header">
-
-            <div class="container">
+            <div class="section-title">
 
                 <span class="section-label">
-                    المواد الدراسية
+                    ماذا نقدم؟
                 </span>
 
-                <h1>
-                    اختار المادة
-                </h1>
-
-                <p>
-                    ابدأ رحلتك التعليمية واختر المادة التي تريد مذاكرتها.
-                </p>
+                <h2>
+                    كل اللي تحتاجه في مكان واحد
+                </h2>
 
             </div>
 
-        </section>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">📚</div>
+
+                    <h3>
+                        المواد الدراسية
+                    </h3>
+
+                    <p>
+                        محتوى منظم يساعدك على فهم ومراجعة المواد.
+                    </p>
+
+                </div>
 
 
-        <section class="section">
+                <div class="feature-card">
 
-            <div class="container">
+                    <div class="feature-icon">📝</div>
 
-                <div class="subjects-grid">
+                    <h3>
+                        الامتحانات
+                    </h3>
 
-                    <div class="subject-card"
-                         onclick="openSubject('physics')">
+                    <p>
+                        اختبر نفسك وتابع مستواك باستمرار.
+                    </p>
 
-                        <div class="subject-icon">
-                            ⚛️
-                        </div>
-
-                        <h3>
-                            الفيزياء
-                        </h3>
-
-                        <p>
-                            فهم القوانين وتطبيقاتها.
-                        </p>
-
-                    </div>
+                </div>
 
 
-                    <div class="subject-card"
-                         onclick="openSubject('history')">
+                <div class="feature-card">
 
-                        <div class="subject-icon">
-                            🏛️
-                        </div>
+                    <div class="feature-icon">📖</div>
 
-                        <h3>
-                            التاريخ الوطني
-                        </h3>
+                    <h3>
+                        المكتبة
+                    </h3>
 
-                        <p>
-                            الأحداث والشخصيات المهمة.
-                        </p>
+                    <p>
+                        مراجع وملفات تساعدك أثناء رحلتك التعليمية.
+                    </p>
 
-                    </div>
+                </div>
 
 
-                    <div class="subject-card"
-                         onclick="openSubject('english')">
+                <div class="feature-card">
 
-                        <div class="subject-icon">
-                            🇬🇧
-                        </div>
+                    <div class="feature-icon">📊</div>
 
-                        <h3>
-                            اللغة الإنجليزية
-                        </h3>
+                    <h3>
+                        لوحتك الشخصية
+                    </h3>
 
-                        <p>
-                            Grammar - Vocabulary - Reading.
-                        </p>
-
-                    </div>
-
-
-                    <div class="subject-card"
-                         onclick="openSubject('arabic')">
-
-                        <div class="subject-icon">
-                            📚
-                        </div>
-
-                        <h3>
-                            اللغة العربية
-                        </h3>
-
-                        <p>
-                            النحو والأدب والقراءة.
-                        </p>
-
-                    </div>
+                    <p>
+                        تابع تقدمك وإنجازاتك من مكان واحد.
+                    </p>
 
                 </div>
 
             </div>
 
-        </section>
+        </div>
 
-    </main>
+    </section>
+
+</main>
 
 
-    <!-- ================= LIBRARY ================= -->
-    <main id="library" class="page" style="display:none;">
+<!-- ================= SUBJECTS ================= -->
 
-        <section class="page-header">
+<main id="subjects" class="page">
 
-            <div class="container">
+    <section class="page-header">
 
-                <span class="section-label">
+        <div class="container">
+
+            <span class="section-label">
+                المواد الدراسية
+            </span>
+
+            <h1>
+                اختار المادة
+            </h1>
+
+            <p>
+                ابدأ رحلتك التعليمية واختر المادة التي تريد مذاكرتها.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="subjects-grid">
+
+                <div
+                    class="subject-card"
+                    onclick="openSubject('physics')">
+
+                    <div class="subject-icon">
+                        ⚛️
+                    </div>
+
+                    <h3>
+                        الفيزياء
+                    </h3>
+
+                    <p>
+                        فهم القوانين وتطبيقاتها.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="subject-card"
+                    onclick="openSubject('history')">
+
+                    <div class="subject-icon">
+                        🏛️
+                    </div>
+
+                    <h3>
+                        التاريخ الوطني
+                    </h3>
+
+                    <p>
+                        الأحداث والشخصيات المهمة.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="subject-card"
+                    onclick="openSubject('english')">
+
+                    <div class="subject-icon">
+                        🇬🇧
+                    </div>
+
+                    <h3>
+                        اللغة الإنجليزية
+                    </h3>
+
+                    <p>
+                        Grammar - Vocabulary - Reading.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="subject-card"
+                    onclick="openSubject('arabic')">
+
+                    <div class="subject-icon">
+                        📚
+                    </div>
+
+                    <h3>
+                        اللغة العربية
+                    </h3>
+
+                    <p>
+                        النحو والأدب والقراءة.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= LIBRARY ================= -->
+
+<main id="library" class="page">
+
+    <section class="page-header">
+
+        <div class="container">
+
+            <span class="section-label">
+                مكتبة فوتون
+            </span>
+
+            <h1>
+                المكتبة
+            </h1>
+
+            <p>
+                كل الملفات والمراجع التي تحتاجها في مكان واحد.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="panel">
+
+                <div class="panel-icon">
+                    📚
+                </div>
+
+                <h3>
                     مكتبة فوتون
-                </span>
-
-                <h1>
-                    المكتبة
-                </h1>
+                </h3>
 
                 <p>
-                    كل الملفات والمراجع التي تحتاجها في مكان واحد.
+                    سيتم إضافة الملفات والمراجع هنا قريبًا.
                 </p>
 
             </div>
 
-        </section>
+        </div>
+
+    </section>
+
+</main>
 
 
-        <section class="section">
+<!-- ================= EXAMS ================= -->
 
-            <div class="container">
+<main id="exams" class="page">
 
-                <div class="panel">
+    <section class="page-header">
 
-                    <h3>
-                        📚 مكتبة فوتون
-                    </h3>
+        <div class="container">
 
-                    <p>
-                        سيتم إضافة الملفات والمراجع هنا قريبًا.
-                    </p>
+            <span class="section-label">
+                اختبر نفسك
+            </span>
 
+            <h1>
+                الامتحانات
+            </h1>
+
+            <p>
+                اختبر مستواك وتابع تقدمك.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="panel">
+
+                <div class="panel-icon">
+                    📝
                 </div>
 
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- ================= EXAMS ================= -->
-    <main id="exams" class="page" style="display:none;">
-
-        <section class="page-header">
-
-            <div class="container">
-
-                <span class="section-label">
-                    اختبر نفسك
-                </span>
-
-                <h1>
+                <h3>
                     الامتحانات
-                </h1>
+                </h3>
 
                 <p>
-                    اختبر مستواك وتابع تقدمك.
+                    سيتم إضافة الامتحانات هنا.
                 </p>
 
             </div>
 
-        </section>
+        </div>
+
+    </section>
+
+</main>
 
 
-        <section class="section">
+<!-- ================= DASHBOARD ================= -->
 
-            <div class="container">
+<main id="dashboard" class="page">
 
-                <div class="panel">
+    <section class="page-header">
 
-                    <h3>
-                        📝 الامتحانات
-                    </h3>
+        <div class="container">
 
-                    <p>
-                        سيتم إضافة الامتحانات هنا.
-                    </p>
+            <span class="section-label">
+                حسابك
+            </span>
 
+            <h1>
+                لوحتي
+            </h1>
+
+            <p>
+                تابع تقدمك وإنجازاتك على منصة فوتون.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-avatar">
+                    ⚡
                 </div>
 
-            </div>
+                <h2 id="studentNameDisplay">
+                    أهلاً بك في فوتون
+                </h2>
 
-        </section>
-
-    </main>
-
-
-    <!-- ================= DASHBOARD ================= -->
-    <main id="dashboard" class="page" style="display:none;">
-
-        <section class="page-header">
-
-            <div class="container">
-
-                <span class="section-label">
-                    حسابك
-                </span>
-
-                <h1>
-                    لوحتي
-                </h1>
-
-                <p>
-                    تابع تقدمك وإنجازاتك على منصة فوتون.
+                <p id="dashboardMessage">
+                    قم بتسجيل الدخول للبدء.
                 </p>
 
-            </div>
+                <div class="stats-grid">
 
-        </section>
+                    <div class="stat-card">
+                        <strong id="lessonsValue">0</strong>
+                        <span>الدروس</span>
+                    </div>
 
+                    <div class="stat-card">
+                        <strong id="examsValue">0</strong>
+                        <span>الامتحانات</span>
+                    </div>
 
-        <section class="section">
-
-            <div class="container">
-
-                <div class="panel">
-
-                    <h3>
-                        👋 أهلاً بك في فوتون
-                    </h3>
-
-                    <div id="dashboardContent">
-
-                        <p>
-                            لم يتم تسجيل الدخول بعد.
-                        </p>
-
+                    <div class="stat-card">
+                        <strong id="pointsValue">0</strong>
+                        <span>النقاط</span>
                     </div>
 
                 </div>
 
             </div>
 
-        </section>
+        </div>
 
-    </main>
+    </section>
+
+</main>
 
 
-    <!-- ================= ABOUT ================= -->
-    <main id="about" class="page" style="display:none;">
+<!-- ================= ABOUT ================= -->
 
-        <section class="page-header">
+<main id="about" class="page">
 
-            <div class="container">
+    <section class="page-header">
 
-                <span class="section-label">
-                    عن المنصة
-                </span>
+        <div class="container">
 
-                <h1>
-                    عن فوتون
-                </h1>
+            <span class="section-label">
+                عن المنصة
+            </span>
+
+            <h1>
+                عن فوتون
+            </h1>
+
+            <p>
+                منصة تعليمية هدفها جعل رحلة التعلم أسهل وأكثر تنظيمًا.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="panel">
+
+                <div class="panel-icon">
+                    ⚡
+                </div>
+
+                <h3>
+                    PHOTON | فوتون
+                </h3>
 
                 <p>
-                    منصة تعليم
+                    فوتون منصة تعليمية تهدف إلى جمع المحتوى
+                    التعليمي والامتحانات والمراجع في مكان واحد
+                    بطريقة بسيطة ومنظمة.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= ADMIN ================= -->
+
+<main id="admin" class="page">
+
+    <section class="page-header">
+
+        <div class="container">
+
+            <span class="section-label">
+                إدارة المنصة
+            </span>
+
+            <h1>
+                لوحة تحكم الأدمن
+            </h1>
+
+            <p>
+                إضافة وإدارة المحتوى التعليمي للمنصة.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <div class="container admin-container">
+
+            <div class="panel">
+
+                <h3>
+                    ➕ إضافة درس جديد
+                </h3>
+
+                <select id="adminSubjectSelect" class="login-input">
+
+                    <option value="physics">
+                        الفيزياء
+                    </option>
+
+                    <option value="history">
+                        التاريخ الوطني
+                    </option>
+
+                    <option value="english">
+                        اللغة الإنجليزية
+                    </option>
+
+                    <option value="arabic">
+                        اللغة العربية
+                    </option>
+
+                </select>
+
+
+                <input
+                    type="text"
+                    id="adminLessonTitle"
+                    class="login-input"
+                    placeholder="عنوان الدرس">
+
+
+                <input
+                    type="text"
+                    id="adminLessonDuration"
+                    class="login-input"
+                    placeholder="مدة الدرس - مثال: 25 دقيقة">
+
+
+                <button
+                    class="primary-btn full"
+                    onclick="addNewLesson()">
+
+                    نشر الدرس الآن 🚀
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= SUBJECT MODAL ================= -->
+
+<div id="subjectModal" class="modal">
+
+    <div class="modal-content">
+
+        <button
+            class="close-modal"
+            onclick="closeSubjectModal()">
+
+            ×
+
+        </button>
+
+        <div id="subjectModalContent"></div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= LOGIN MODAL ================= -->
+
+<div id="loginModal" class="modal">
+
+    <div class="modal-content">
+
+        <button
+            class="close-modal"
+            onclick="closeLoginModal()">
+
+            ×
+
+        </button>
+
+        <h2>
+            تسجيل الدخول
+        </h2>
+
+        <p>
+            أهلاً بك في منصة فوتون ⚡
+        </p>
+
+
+        <input
+            type="email"
+            id="studentEmailInput"
+            class="login-input"
+            placeholder="البريد الإلكتروني">
+
+
+        <input
+            type="password"
+            id="studentPasswordInput"
+            class="login-input"
+            placeholder="كلمة المرور">
+
+
+        <button
+            class="primary-btn full"
+            onclick="handleLogin()">
+
+            دخول 🚀
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= TOAST ================= -->
+
+<div id="toast" class="toast">
+
+    <span id="toastMessage"></span>
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="logo">
+
+            <span class="logo-icon">
+                ⚡
+            </span>
+
+            <div>
+
+                <h2>
+                    PHOTON
+                </h2>
+
+                <span>
+                    فوتون
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <p>
+            PHOTON | مستقبلك يبدأ من هنا ⚡
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
