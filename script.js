@@ -1,1253 +1,998 @@
-/* =========================================================
-   PHOTON | FUTON
-   Frontend JavaScript with Supabase Integration & Admin Panel
-========================================================= */
+// =========================================
+// NEBRAS | نِبراس
+// Main JavaScript
+// =========================================
 
-/* ================= SUPABASE INIT ================= */
-const SUPABASE_URL = 'https://ahijhhefbjslieeckjkc.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_JJUMW1OLWg1zY7H_bWw8cQ_McBx0TUf'; 
+// ================================
+// SUPABASE CONFIGURATION
+// ================================
 
-let supabaseClient = null;
+const SUPABASE_URL = "https://wooixczgctxqhljfnjjn.supabase.co";
 
-// تهيئة Supabase مع وضع الحماية لتجنب تعطل الصفحة
-try {
-  if (window.supabase) {
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-} catch (e) {
-  console.warn("تعذر الربط التلقائي بـ Supabase:", e);
-}
+// ضعي هنا نفس الـ anon/public key الموجود عندك حاليًا
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvb2l4Y3pnY3R4cWhsamZuampuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNDMzMzgsImV4cCI6MjEwNDYxOTMzOH0.jtxLOcID-x3VHY0mDQgg3HyxZhE6ltoDDC9IdNGW3Cc";
 
-
-/* ================= STORAGE ================= */
-
-const STORAGE = {
-  points: "photon_points",
-  lessons: "photon_lessons",
-  exams: "photon_exams",
-  student: "photon_student"
-};
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
 
 
-let points = Number(localStorage.getItem(STORAGE.points)) || 0;
-let lessonsCompleted = Number(localStorage.getItem(STORAGE.lessons)) || 0;
-let examsCompleted = Number(localStorage.getItem(STORAGE.exams)) || 0;
-let studentName = localStorage.getItem(STORAGE.student) || "";
+// =========================================
+// ELEMENTS
+// =========================================
+
+const authModal = document.getElementById("authModal");
+const closeAuthBtn = document.getElementById("closeAuthBtn");
+
+const loginNavBtn = document.getElementById("loginNavBtn");
+const startLearningBtn = document.getElementById("startLearningBtn");
+
+const loginForm = document.getElementById("loginForm");
+const registerForm = document.getElementById("registerForm");
+
+const showRegisterBtn = document.getElementById("showRegisterBtn");
+const showLoginBtn = document.getElementById("showLoginBtn");
+
+const authTitle = document.getElementById("authTitle");
+const authSubtitle = document.getElementById("authSubtitle");
+const authMessage = document.getElementById("authMessage");
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+const studentDashboard =
+  document.getElementById("studentDashboard");
+
+const adminDashboard =
+  document.getElementById("adminDashboard");
+
+const studentName =
+  document.getElementById("studentName");
+
+const studentPoints =
+  document.getElementById("studentPoints");
+
+const studentLevel =
+  document.getElementById("studentLevel");
+
+const studentLessons =
+  document.getElementById("studentLessons");
+
+const studentExams =
+  document.getElementById("studentExams");
+
+const lessonsContainer =
+  document.getElementById("lessonsContainer");
+
+const booksContainer =
+  document.getElementById("booksContainer");
+
+const examsContainer =
+  document.getElementById("examsContainer");
+
+const themeToggle =
+  document.getElementById("themeToggle");
+
+const toast =
+  document.getElementById("toast");
 
 
-/* ================= SUBJECT DATA ================= */
+// =========================================
+// AUTH MODAL
+// =========================================
 
-const subjects = {
+function openAuthModal(mode = "login") {
 
-  physics: {
-    title: "الفيزياء",
-    label: "العلوم الفيزيائية",
-    icon: "Φ",
+  authModal.classList.remove("hidden");
 
-    lessons: [
-      "الحركة والقوانين الأساسية",
-      "القوة والتأثيرات الميكانيكية",
-      "الطاقة والتحولات",
-      "الكهرباء والمجالات",
-      "الموجات والاهتزازات",
-      "مراجعة شاملة"
-    ],
-
-    resources: [
-      "ملخص أساسيات الفيزياء",
-      "ورقة القوانين المهمة",
-      "تدريبات تطبيقية",
-      "مراجعة سريعة قبل الاختبار"
-    ]
-  },
-
-
-  history: {
-    title: "التاريخ الوطني",
-    label: "المجال الإنساني",
-    icon: "⌘",
-
-    lessons: [
-      "مدخل إلى التاريخ الوطني",
-      "المراحل التاريخية الأساسية",
-      "أهم الأحداث والتحولات",
-      "الشخصيات التاريخية",
-      "قراءة وتحليل الوثائق",
-      "مراجعة شاملة"
-    ],
-
-    resources: [
-      "ملخص التاريخ الوطني",
-      "خط زمني للأحداث",
-      "بطاقات الشخصيات",
-      "تدريبات تحليل الوثائق"
-    ]
-  },
-
-
-  english: {
-    title: "اللغة الإنجليزية",
-    label: "Language",
-    icon: "Aa",
-
-    lessons: [
-      "Building Strong Vocabulary",
-      "Essential Grammar",
-      "Reading Skills",
-      "Writing Skills",
-      "Communication",
-      "Revision"
-    ],
-
-    resources: [
-      "Vocabulary List",
-      "Grammar Guide",
-      "Writing Templates",
-      "Reading Practice"
-    ]
-  },
-
-
-  arabic: {
-    title: "اللغة العربية",
-    label: "اللغة والأدب",
-    icon: "ع",
-
-    lessons: [
-      "أساسيات النحو",
-      "الجملة وأنواعها",
-      "البلاغة والصور البيانية",
-      "الأدب والنصوص",
-      "فهم وتحليل النص",
-      "مراجعة شاملة"
-    ],
-
-    resources: [
-      "ملخص النحو",
-      "دليل البلاغة",
-      "تدريبات النصوص",
-      "مراجعة شاملة"
-    ]
-  }
-
-};
-
-
-/* ================= EXAM QUESTIONS ================= */
-
-const examQuestions = {
-
-  physics: [
-    {
-      q: "أي مما يلي يمثل كمية فيزيائية متجهة؟",
-      options: ["الزمن", "الكتلة", "الإزاحة", "درجة الحرارة"],
-      answer: 2
-    },
-    {
-      q: "ما الوحدة الأساسية لقياس الزمن في النظام الدولي؟",
-      options: ["المتر", "الثانية", "الكيلوجرام", "الأمبير"],
-      answer: 1
-    },
-    {
-      q: "إذا زادت سرعة جسم خلال فترة زمنية، فهذا يعني وجود:",
-      options: ["تسارع", "كتلة", "طاقة حرارية فقط", "حجم"],
-      answer: 0
-    }
-  ],
-
-
-  history: [
-    {
-      q: "ما المقصود بالوثيقة التاريخية؟",
-      options: [
-        "مصدر يساعد على دراسة الماضي",
-        "قانون فيزيائي",
-        "تجربة علمية",
-        "معادلة رياضية"
-      ],
-      answer: 0
-    },
-    {
-      q: "ما أهمية دراسة التاريخ؟",
-      options: [
-        "فهم الماضي واستخلاص الدروس",
-        "حفظ الأرقام فقط",
-        "تجنب دراسة الحاضر",
-        "إلغاء الاختلاف"
-      ],
-      answer: 0
-    },
-    {
-      q: "الخط الزمني يساعد على:",
-      options: [
-        "ترتيب الأحداث",
-        "حل المعادلات",
-        "تعلم الكلمات",
-        "قياس المسافات"
-      ],
-      answer: 0
-    }
-  ],
-
-
-  english: [
-    {
-      q: "Choose the correct sentence:",
-      options: [
-        "She go to school.",
-        "She goes to school.",
-        "She going school.",
-        "She gone school."
-      ],
-      answer: 1
-    },
-    {
-      q: "What is the opposite of 'easy'?",
-      options: ["simple", "hard", "small", "early"],
-      answer: 1
-    },
-    {
-      q: "Choose the correct past form of 'go':",
-      options: ["goed", "goes", "went", "going"],
-      answer: 2
-    }
-  ],
-
-
-  arabic: [
-    {
-      q: "ما نوع كلمة «كتاب»؟",
-      options: ["فعل", "اسم", "حرف", "جملة"],
-      answer: 1
-    },
-    {
-      q: "الجملة التي تبدأ باسم تسمى:",
-      options: ["جملة فعلية", "جملة اسمية", "شبه جملة", "مفرد"],
-      answer: 1
-    },
-    {
-      q: "الفعل الماضي يدل غالبًا على:",
-      options: [
-        "حدث وقع في الماضي",
-        "حدث يقع الآن",
-        "طلب",
-        "نفي"
-      ],
-      answer: 0
-    }
-  ]
-
-};
-
-
-/* ================= PAGE NAVIGATION ================= */
-
-function showPage(pageId) {
-
-  const pages = document.querySelectorAll(".page");
-
-  pages.forEach(page => {
-    page.classList.remove("active-page");
-  });
-
-
-  const target = document.getElementById(pageId);
-
-  if (target) {
-    target.classList.add("active-page");
-  }
-
-
-  document.querySelectorAll(".nav-links a").forEach(link => {
-    link.classList.remove("active");
-
-    if (link.dataset.page === pageId) {
-      link.classList.add("active");
-    }
-  });
-
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-
-  const menu = document.querySelector(".nav-links");
-
-  if (menu) {
-    menu.classList.remove("open");
+  if (mode === "register") {
+    showRegister();
+  } else {
+    showLogin();
   }
 }
 
 
-/* ================= NAV LINKS ================= */
-
-document.querySelectorAll(".nav-links a").forEach(link => {
-
-  link.addEventListener("click", function(event) {
-
-    event.preventDefault();
-
-    const page = this.dataset.page;
-
-    if (page) {
-      showPage(page);
-    }
-
-  });
-
-});
-
-
-/* ================= MOBILE MENU ================= */
-
-const menuBtn = document.getElementById("menuBtn");
-
-if (menuBtn) {
-
-  menuBtn.addEventListener("click", () => {
-
-    const nav = document.querySelector(".nav-links");
-
-    nav.classList.toggle("open");
-
-  });
-
+function closeAuthModal() {
+  authModal.classList.add("hidden");
+  clearAuthMessage();
 }
 
 
-/* ================= LOGIN & AUTHENTICATION ================= */
+function showLogin() {
 
-function openLogin() {
-  const modal = document.getElementById("loginModal");
-  if (!modal) return;
-  modal.classList.add("show");
+  loginForm.classList.remove("hidden");
+  registerForm.classList.add("hidden");
+
+  authTitle.textContent = "أهلاً بك في نِبراس";
+
+  authSubtitle.textContent =
+    "سجّل دخولك وابدأ رحلتك التعليمية.";
+
+  clearAuthMessage();
 }
 
-async function handleSignUp() {
-  const nameInput = document.getElementById("studentNameInput");
-  const emailInput = document.getElementById("studentEmailInput");
-  const passwordInput = document.getElementById("studentPasswordInput");
 
-  const name = nameInput ? nameInput.value.trim() : "";
-  const email = emailInput ? emailInput.value.trim() : "";
-  const password = passwordInput ? passwordInput.value.trim() : "";
+function showRegister() {
 
-  if (!name || !email || !password) {
-    showToast("يرجى ملء جميع الحقول لتسجيل حساب جديد ⚠️");
-    return;
-  }
+  loginForm.classList.add("hidden");
+  registerForm.classList.remove("hidden");
 
-  showToast("جاري إنشاء حسابك...");
+  authTitle.textContent =
+    "أنشئ حسابك في نِبراس";
 
-  if (!supabaseClient) {
-    studentName = name;
-    localStorage.setItem(STORAGE.student, studentName);
-    updateDashboard();
-    closeModal("loginModal");
-    showToast("أهلًا بك في فوتون يا " + studentName + " ✨");
-    showPage("dashboard");
-    return;
-  }
+  authSubtitle.textContent =
+    "أنشئ حسابك وابدأ رحلتك التعليمية.";
 
-  try {
-    const { data, error } = await supabaseClient.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        data: { full_name: name }
-      }
-    });
+  clearAuthMessage();
+}
 
-    if (error) {
-      showToast("خطأ: " + error.message);
-      return;
-    }
 
-    if (data?.user) {
-      await supabaseClient.from('students').insert([
-        { id: data.user.id, email: email, name: name, points: 0 }
-      ]);
-    }
+function showAuthMessage(message, type = "error") {
 
-    studentName = name;
-    localStorage.setItem(STORAGE.student, studentName);
+  authMessage.textContent = message;
 
-    updateDashboard();
-    closeModal("loginModal");
-    showToast("أهلًا بك في فوتون يا " + studentName + " ✨");
-    showPage("dashboard");
-
-  } catch (err) {
-    studentName = name;
-    localStorage.setItem(STORAGE.student, studentName);
-    updateDashboard();
-    closeModal("loginModal");
-    showToast("تم الدخول بنجاح ✨");
-    showPage("dashboard");
+  if (type === "success") {
+    authMessage.style.color = "#22c55e";
+  } else {
+    authMessage.style.color = "#ef4444";
   }
 }
 
-async function handleLogin() {
-  const emailInput = document.getElementById("studentEmailInput");
-  const passwordInput = document.getElementById("studentPasswordInput");
 
-  const email = emailInput ? emailInput.value.trim() : "";
-  const password = passwordInput ? passwordInput.value.trim() : "";
+function clearAuthMessage() {
+  authMessage.textContent = "";
+}
+
+
+// =========================================
+// LOGIN
+// =========================================
+
+loginForm.addEventListener("submit", async (event) => {
+
+  event.preventDefault();
+
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  const password =
+    document.getElementById("loginPassword").value;
 
   if (!email || !password) {
-    showToast("أدخل البريد الإلكتروني وكلمة السر لتسجيل الدخول ⚠️");
+    showAuthMessage("من فضلك املأ كل البيانات.");
     return;
   }
 
-  showToast("جاري تسجيل الدخول...");
+  showAuthMessage("جاري تسجيل الدخول...", "success");
 
-  if (!supabaseClient) {
-    studentName = email.split('@')[0];
-    localStorage.setItem(STORAGE.student, studentName);
-    updateDashboard();
-    closeModal("loginModal");
-    showToast("تم تسجيل الدخول بنجاح 🎉");
-    showPage("dashboard");
-    return;
-  }
-
-  try {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-      email: email,
-      password: password,
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
     });
 
+  if (error) {
+
+    showAuthMessage(
+      getAuthErrorMessage(error.message)
+    );
+
+    return;
+  }
+
+  closeAuthModal();
+
+  showToast("تم تسجيل الدخول بنجاح ✨");
+
+  await loadUserData(data.user);
+
+  document
+    .getElementById("studentDashboard")
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+});
+
+
+// =========================================
+// REGISTER
+// =========================================
+
+registerForm.addEventListener("submit", async (event) => {
+
+  event.preventDefault();
+
+  const fullName =
+    document.getElementById("registerName")
+      .value
+      .trim();
+
+  const email =
+    document.getElementById("registerEmail")
+      .value
+      .trim();
+
+  const password =
+    document.getElementById("registerPassword")
+      .value;
+
+  if (!fullName || !email || !password) {
+
+    showAuthMessage(
+      "من فضلك املأ جميع البيانات."
+    );
+
+    return;
+  }
+
+  if (fullName.split(/\s+/).length < 3) {
+
+    showAuthMessage(
+      "اكتب الاسم الثلاثي."
+    );
+
+    return;
+  }
+
+  if (password.length < 6) {
+
+    showAuthMessage(
+      "كلمة المرور يجب أن تكون 6 أحرف على الأقل."
+    );
+
+    return;
+  }
+
+  showAuthMessage(
+    "جاري إنشاء الحساب...",
+    "success"
+  );
+
+  const { data, error } =
+    await supabaseClient.auth.signUp({
+
+      email,
+
+      password,
+
+      options: {
+        data: {
+          full_name: fullName
+        },
+
+        // إصلاح رابط الرجوع بعد تأكيد البريد
+        emailRedirectTo:
+          "https://asmaaharfoush76-bot.github.io/Nibras-/"
+      }
+
+    });
+
+  if (error) {
+
+    showAuthMessage(
+      getAuthErrorMessage(error.message)
+    );
+
+    return;
+  }
+
+  if (data.session) {
+
+    closeAuthModal();
+
+    showToast(
+      "تم إنشاء الحساب بنجاح 🎉"
+    );
+
+    await loadUserData(data.user);
+
+  } else {
+
+    showAuthMessage(
+      "تم إنشاء الحساب. راجع بريدك الإلكتروني لتأكيد الحساب.",
+      "success"
+    );
+
+  }
+
+});
+
+
+// =========================================
+// LOAD CURRENT USER
+// =========================================
+
+async function checkCurrentUser() {
+
+  const {
+    data: {
+      session
+    }
+  } = await supabaseClient.auth.getSession();
+
+  if (session && session.user) {
+
+    await loadUserData(session.user);
+
+  } else {
+
+    hideDashboards();
+
+    loginNavBtn.textContent =
+      "تسجيل الدخول";
+  }
+}
+
+
+// =========================================
+// LOAD USER DATA
+// =========================================
+
+async function loadUserData(user) {
+
+  if (!user) return;
+
+  const {
+    data: profile,
+    error
+  } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  if (error) {
+
+    console.error(
+      "Profile error:",
+      error
+    );
+
+    showToast(
+      "تعذر تحميل بيانات الحساب."
+    );
+
+    return;
+  }
+
+  studentName.textContent =
+    profile.full_name || "طالب نِبراس";
+
+  studentPoints.textContent =
+    profile.points ?? 0;
+
+  studentLevel.textContent =
+    profile.level ?? 1;
+
+  studentDashboard.classList.remove("hidden");
+
+  loginNavBtn.textContent =
+    "حسابي";
+
+  if (profile.role === "admin") {
+
+    adminDashboard.classList.remove(
+      "hidden"
+    );
+
+  } else {
+
+    adminDashboard.classList.add(
+      "hidden"
+    );
+
+  }
+
+  await loadStudentStats(user.id);
+
+  await loadLessons();
+
+  await loadBooks();
+
+  await loadExams();
+}
+
+
+// =========================================
+// HIDE DASHBOARDS
+// =========================================
+
+function hideDashboards() {
+
+  studentDashboard.classList.add(
+    "hidden"
+  );
+
+  adminDashboard.classList.add(
+    "hidden"
+  );
+}
+
+
+// =========================================
+// STUDENT STATS
+// =========================================
+
+async function loadStudentStats(userId) {
+
+  const {
+    count: lessonsCount
+  } = await supabaseClient
+    .from("progress")
+    .select("*", {
+      count: "exact",
+      head: true
+    })
+    .eq("student_id", userId)
+    .eq("completed", true);
+
+  studentLessons.textContent =
+    lessonsCount || 0;
+
+
+  const {
+    count: examsCount
+  } = await supabaseClient
+    .from("exam_attempts")
+    .select("*", {
+      count: "exact",
+      head: true
+    })
+    .eq("student_id", userId);
+
+  studentExams.textContent =
+    examsCount || 0;
+}
+
+
+// =========================================
+// LOAD LESSONS
+// =========================================
+
+async function loadLessons() {
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("lessons")
+    .select("*")
+    .eq("is_published", true)
+    .order("created_at", {
+      ascending: false
+    });
+
+  if (error) {
+
+    console.error(
+      "Lessons error:",
+      error
+    );
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    return;
+  }
+
+  lessonsContainer.innerHTML =
+    data.map(lesson => `
+
+      <article class="content-card">
+
+        <div class="content-card-body">
+
+          <div class="content-card-meta">
+
+            <span class="meta-tag">
+              ${escapeHtml(lesson.subject)}
+            </span>
+
+          </div>
+
+          <h3>
+            ${escapeHtml(lesson.title)}
+          </h3>
+
+          <p>
+            ${escapeHtml(
+              lesson.description || ""
+            )}
+          </p>
+
+          ${
+            lesson.video_url
+              ? `
+                <a
+                  class="primary-btn"
+                  href="${safeUrl(lesson.video_url)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  مشاهدة الدرس
+                </a>
+              `
+              : ""
+          }
+
+        </div>
+
+      </article>
+
+    `).join("");
+}
+
+
+// =========================================
+// LOAD BOOKS
+// =========================================
+
+async function loadBooks() {
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("books")
+    .select("*")
+    .eq("is_published", true)
+    .order("created_at", {
+      ascending: false
+    });
+
+  if (error) {
+
+    console.error(
+      "Books error:",
+      error
+    );
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    return;
+  }
+
+  booksContainer.innerHTML =
+    data.map(book => `
+
+      <article class="content-card">
+
+        <div class="content-card-body">
+
+          <div class="content-card-meta">
+
+            <span class="meta-tag">
+              ${escapeHtml(book.subject)}
+            </span>
+
+          </div>
+
+          <h3>
+            ${escapeHtml(book.title)}
+          </h3>
+
+          <p>
+            ${escapeHtml(
+              book.description || ""
+            )}
+          </p>
+
+          ${
+            book.file_url
+              ? `
+                <a
+                  class="primary-btn"
+                  href="${safeUrl(book.file_url)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  فتح الكتاب
+                </a>
+              `
+              : ""
+          }
+
+        </div>
+
+      </article>
+
+    `).join("");
+}
+
+
+// =========================================
+// LOAD EXAMS
+// =========================================
+
+async function loadExams() {
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("exams")
+    .select("*")
+    .eq("is_published", true)
+    .order("created_at", {
+      ascending: false
+    });
+
+  if (error) {
+
+    console.error(
+      "Exams error:",
+      error
+    );
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    return;
+  }
+
+  examsContainer.innerHTML =
+    data.map(exam => `
+
+      <article class="content-card">
+
+        <div class="content-card-body">
+
+          <div class="content-card-meta">
+
+            <span class="meta-tag">
+              ${escapeHtml(exam.subject)}
+            </span>
+
+            ${
+              exam.duration_minutes
+                ? `
+                  <span class="meta-tag">
+                    ${exam.duration_minutes} دقيقة
+                  </span>
+                `
+                : ""
+            }
+
+          </div>
+
+          <h3>
+            ${escapeHtml(exam.title)}
+          </h3>
+
+          <p>
+            ${escapeHtml(
+              exam.description || ""
+            )}
+          </p>
+
+        </div>
+
+      </article>
+
+    `).join("");
+}
+
+
+// =========================================
+// LOGOUT
+// =========================================
+
+logoutBtn.addEventListener(
+  "click",
+  async () => {
+
+    const {
+      error
+    } = await supabaseClient.auth.signOut();
+
     if (error) {
-      showToast("خطأ في تسجيل الدخول: " + error.message);
+
+      showToast(
+        "حدث خطأ أثناء تسجيل الخروج."
+      );
+
       return;
     }
 
-    if (data?.user) {
-      const { data: studentData } = await supabaseClient
-        .from('students')
-        .select('name, points')
-        .eq('id', data.user.id)
-        .single();
+    hideDashboards();
 
-      if (studentData) {
-        studentName = studentData.name;
-        points = studentData.points || 0;
-        localStorage.setItem(STORAGE.points, points);
-      } else {
-        studentName = data.user.user_metadata?.full_name || email.split('@')[0];
+    loginNavBtn.textContent =
+      "تسجيل الدخول";
+
+    showToast(
+      "تم تسجيل الخروج 👋"
+    );
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+);
+
+
+// =========================================
+// AUTH STATE LISTENER
+// =========================================
+
+supabaseClient.auth.onAuthStateChange(
+  async (event, session) => {
+
+    if (session && session.user) {
+
+      await loadUserData(
+        session.user
+      );
+
+    } else {
+
+      hideDashboards();
+
+      loginNavBtn.textContent =
+        "تسجيل الدخول";
+
+    }
+
+  }
+);
+
+
+// =========================================
+// THEME
+// =========================================
+
+function loadTheme() {
+
+  const savedTheme =
+    localStorage.getItem(
+      "nebras_theme"
+    );
+
+  if (savedTheme === "dark") {
+
+    document.body.classList.add(
+      "dark-mode"
+    );
+
+    themeToggle.textContent = "☀";
+
+  } else {
+
+    document.body.classList.remove(
+      "dark-mode"
+    );
+
+    themeToggle.textContent = "☾";
+
+  }
+}
+
+
+themeToggle.addEventListener(
+  "click",
+  () => {
+
+    const isDark =
+      document.body.classList.toggle(
+        "dark-mode"
+      );
+
+    localStorage.setItem(
+      "nebras_theme",
+      isDark ? "dark" : "light"
+    );
+
+    themeToggle.textContent =
+      isDark ? "☀" : "☾";
+
+  }
+);
+
+
+// =========================================
+// BUTTONS
+// =========================================
+
+loginNavBtn.addEventListener(
+  "click",
+  () => {
+
+    const dashboardVisible =
+      !studentDashboard.classList.contains(
+        "hidden"
+      );
+
+    if (dashboardVisible) {
+
+      studentDashboard.scrollIntoView({
+        behavior: "smooth"
+      });
+
+    } else {
+
+      openAuthModal("login");
+
+    }
+
+  }
+);
+
+
+startLearningBtn.addEventListener(
+  "click",
+  async () => {
+
+    const {
+      data: {
+        session
       }
-
-      localStorage.setItem(STORAGE.student, studentName);
-      updateDashboard();
-      closeModal("loginModal");
-      showToast("تم تسجيل الدخول بنجاح 🎉");
-      showPage("dashboard");
-    }
-
-  } catch (err) {
-    studentName = email.split('@')[0];
-    localStorage.setItem(STORAGE.student, studentName);
-    updateDashboard();
-    closeModal("loginModal");
-    showToast("تم تسجيل الدخول 🎉");
-    showPage("dashboard");
-  }
-}
-
-
-/* ================= DASHBOARD ================= */
-
-function updateDashboard() {
-
-  const pointsElement =
-    document.getElementById("pointsValue");
-
-  const lessonsElement =
-    document.getElementById("lessonsValue");
-
-  const examsElement =
-    document.getElementById("examsValue");
-
-  const badgesElement =
-    document.getElementById("badgesValue");
-
-  const progressElement =
-    document.getElementById("dashboardProgress");
-
-  const bigProgressBar =
-    document.getElementById("bigProgressBar");
-
-  const homeProgress =
-    document.getElementById("homeProgress");
-
-  const studentDisplay =
-    document.getElementById("studentNameDisplay");
-
-  const profileName =
-    document.getElementById("profileName");
-
-
-  if (pointsElement) {
-    pointsElement.textContent = points;
-  }
-
-
-  if (lessonsElement) {
-    lessonsElement.textContent = lessonsCompleted;
-  }
-
-
-  if (examsElement) {
-    examsElement.textContent = examsCompleted;
-  }
-
-
-  let badges = 1;
-
-  if (lessonsCompleted >= 5) {
-    badges++;
-  }
-
-  if (examsCompleted >= 1) {
-    badges++;
-  }
-
-  if (points >= 500) {
-    badges++;
-  }
-
-
-  if (badgesElement) {
-    badgesElement.textContent = badges;
-  }
-
-
-  const progress = Math.min(
-    100,
-    Math.round(
-      (lessonsCompleted / 12) * 100
-    )
-  );
-
-
-  if (progressElement) {
-    progressElement.textContent = progress + "%";
-  }
-
-
-  if (bigProgressBar) {
-    bigProgressBar.style.width = progress + "%";
-  }
-
-
-  if (homeProgress) {
-    homeProgress.textContent = progress + "%";
-  }
-
-
-  if (studentDisplay) {
-
-    studentDisplay.textContent =
-      studentName || "يا بطل";
-  }
-
-
-  if (profileName) {
-
-    profileName.textContent =
-      studentName || "طالب فوتون";
-  }
-
-
-  const badgeLesson =
-    document.getElementById("badgeLesson");
-
-  if (badgeLesson) {
-
-    if (lessonsCompleted >= 5) {
-      badgeLesson.classList.add("unlocked");
-    } else {
-      badgeLesson.classList.remove("unlocked");
-    }
-
-  }
-
-
-  updateHomeCircle(progress);
-}
-
-
-function updateHomeCircle(progress) {
-
-  const circle =
-    document.querySelector(".progress-circle");
-
-  if (!circle) return;
-
-  circle.style.background =
-    `radial-gradient(circle, #0d1b2d 62%, transparent 63%),
-     conic-gradient(#22d3ee ${progress}%,
-     rgba(255,255,255,.08) ${progress}%)`;
-}
-
-
-/* ================= LESSONS ================= */
-
-function completeLesson(button, lessonName) {
-
-  if (!button) return;
-
-  if (button.dataset.completed === "true") {
-
-    showToast("الدرس ده مكتمل بالفعل ✓");
-
-    return;
-  }
-
-
-  button.dataset.completed = "true";
-
-  button.textContent = "مكتمل ✓";
-
-  button.style.background = "#ecfdf3";
-  button.style.color = "#079455";
-
-
-  lessonsCompleted++;
-
-  points += 25;
-
-
-  localStorage.setItem(
-    STORAGE.lessons,
-    lessonsCompleted
-  );
-
-  localStorage.setItem(
-    STORAGE.points,
-    points
-  );
-
-
-  updateDashboard();
-
-  showToast(
-    "أحسنت! أكملت: " + lessonName + " +25 نقطة 🎉"
-  );
-}
-
-
-/* ================= SUBJECT MODAL ================= */
-
-let currentSubject = "physics";
-
-
-function openSubject(subjectKey) {
-
-  const subject = subjects[subjectKey];
-
-  if (!subject) return;
-
-
-  currentSubject = subjectKey;
-
-
-  document.getElementById("modalSubjectIcon").textContent =
-    subject.icon;
-
-  document.getElementById("modalSubjectLabel").textContent =
-    subject.label;
-
-  document.getElementById("modalSubjectTitle").textContent =
-    subject.title;
-
-
-  document.querySelectorAll(".modal-tab").forEach(tab => {
-    tab.classList.remove("active");
-  });
-
-
-  const firstTab =
-    document.querySelector(".modal-tab[data-tab='lessons']");
-
-  if (firstTab) {
-    firstTab.classList.add("active");
-  }
-
-
-  renderSubjectTab("lessons");
-
-
-  document.getElementById("subjectModal")
-    .classList.add("show");
-}
-
-
-function renderSubjectTab(tab) {
-
-  const subject = subjects[currentSubject];
-
-  const container =
-    document.getElementById("subjectModalContent");
-
-  if (!container || !subject) return;
-
-
-  if (tab === "lessons") {
-
-    container.innerHTML = `
-      <div class="modal-list">
-
-        ${subject.lessons.map((lesson, index) => `
-          <div class="modal-list-item">
-
-            <div>
-              <h4>${index + 1}. ${lesson}</h4>
-              <p>درس تعليمي • ${20 + index * 5} دقيقة</p>
-            </div>
-
-            <button onclick="modalLessonComplete('${lesson.replace(/'/g, "\\'")}')">
-              ابدأ
-            </button>
-
-          </div>
-        `).join("")}
-
-      </div>
-    `;
-
-  }
-
-
-  if (tab === "resources") {
-
-    container.innerHTML = `
-      <div class="modal-list">
-
-        ${subject.resources.map(resource => `
-          <div class="modal-list-item">
-
-            <div>
-              <h4>${resource}</h4>
-              <p>مصدر تعليمي</p>
-            </div>
-
-            <button onclick="openResource('${resource.replace(/'/g, "\\'")}')">
-              فتح
-            </button>
-
-          </div>
-        `).join("")}
-
-      </div>
-    `;
-
-  }
-
-
-  if (tab === "practice") {
-
-    container.innerHTML = `
-      <div class="modal-list">
-
-        <div class="modal-list-item">
-
-          <div>
-            <h4>اختبار قصير</h4>
-            <p>أسئلة سريعة لقياس فهمك</p>
-          </div>
-
-          <button onclick="startExam('${currentSubject}')">
-            ابدأ
-          </button>
-
-        </div>
-
-
-        <div class="modal-list-item">
-
-          <div>
-            <h4>تدريب إضافي</h4>
-            <p>تدرب على المفاهيم الأساسية</p>
-          </div>
-
-          <button onclick="showToast('سيتم إضافة التدريب قريبًا ✨')">
-            قريبًا
-          </button>
-
-        </div>
-
-      </div>
-    `;
-
-  }
-}
-
-
-document.querySelectorAll(".modal-tab").forEach(tab => {
-
-  tab.addEventListener("click", function() {
-
-    document.querySelectorAll(".modal-tab").forEach(item => {
-      item.classList.remove("active");
-    });
-
-    this.classList.add("active");
-
-    renderSubjectTab(
-      this.dataset.tab
-    );
-
-  });
-
-});
-
-
-function modalLessonComplete(name) {
-
-  points += 10;
-
-  localStorage.setItem(
-    STORAGE.points,
-    points
-  );
-
-  updateDashboard();
-
-  showToast(
-    "بدأت درس " + name + " +10 نقاط ⚡"
-  );
-}
-
-
-/* ================= LIBRARY ================= */
-
-const filters =
-  document.querySelectorAll(".filter");
-
-filters.forEach(filter => {
-
-  filter.addEventListener("click", function() {
-
-    filters.forEach(item => {
-      item.classList.remove("active");
-    });
-
-    this.classList.add("active");
-
-    filterBooks(
-      this.dataset.filter
-    );
-
-  });
-
-});
-
-
-function filterBooks(subject) {
-
-  const books =
-    document.querySelectorAll(".book-card");
-
-  books.forEach(book => {
-
-    if (
-      subject === "all" ||
-      book.dataset.subject === subject
-    ) {
-
-      book.style.display = "";
+    } = await supabaseClient.auth.getSession();
+
+    if (session) {
+
+      document
+        .getElementById("subjects")
+        .scrollIntoView({
+          behavior: "smooth"
+        });
 
     } else {
 
-      book.style.display = "none";
+      openAuthModal("register");
 
     }
 
-  });
-
-}
-
-
-/* ================= BOOK SEARCH ================= */
-
-const bookSearch =
-  document.getElementById("bookSearch");
-
-
-if (bookSearch) {
-
-  bookSearch.addEventListener("input", function() {
-
-    const query =
-      this.value.trim().toLowerCase();
-
-    document.querySelectorAll(".book-card")
-      .forEach(book => {
-
-        const title =
-          (book.dataset.title || "")
-          .toLowerCase();
-
-        if (title.includes(query)) {
-          book.style.display = "";
-        } else {
-          book.style.display = "none";
-        }
-
-      });
-
-  });
-
-}
-
-
-/* ================= RESOURCE ================= */
-
-function openResource(title) {
-
-  const resourceTitle =
-    document.getElementById("resourceTitle");
-
-  if (resourceTitle) {
-    resourceTitle.textContent = title;
   }
+);
 
-  document.getElementById("resourceModal")
-    .classList.add("show");
-}
 
+closeAuthBtn.addEventListener(
+  "click",
+  closeAuthModal
+);
 
-/* ================= EXAMS ================= */
 
-let currentExam = null;
-let currentQuestion = 0;
-let examScore = 0;
-
-
-function startExam(subject) {
-
-  if (!examQuestions[subject]) {
-
-    showToast("الاختبار غير متاح حاليًا");
-
-    return;
-  }
-
-
-  currentExam = subject;
-
-  currentQuestion = 0;
-
-  examScore = 0;
-
-
-  document.getElementById("examModal")
-    .classList.add("show");
-
-
-  renderQuestion();
-}
-
-
-function renderQuestion() {
-
-  const questions =
-    examQuestions[currentExam];
-
-
-  if (!questions) return;
-
-
-  if (currentQuestion >= questions.length) {
-
-    finishExam();
-
-    return;
-  }
-
-
-  const question =
-    questions[currentQuestion];
-
-
-  const percent =
-    Math.round(
-      ((currentQuestion + 1) / questions.length) * 100
-    );
-
-
-  const subject =
-    subjects[currentExam];
-
-
-  const html = `
-
-    <div class="exam-head">
-
-      <span>${subject.label}</span>
-
-      <h2>${subject.title}</h2>
-
-    </div>
-
-
-    <div class="exam-progress">
-      <span style="width:${percent}%"></span>
-    </div>
-
-
-    <div class="question-number">
-      السؤال ${currentQuestion + 1} من ${questions.length}
-    </div>
-
-
-    <h3 class="question-text">
-      ${question.q}
-    </h3>
-
-
-    <div class="options">
-
-      ${question.options.map((option, index) => `
-
-        <button
-          class="option"
-          onclick="selectAnswer(${index})"
-        >
-          ${option}
-        </button>
-
-      `).join("")}
-
-    </div>
-
-  `;
-
-
-  document.getElementById("examContent")
-    .innerHTML = html;
-}
-
-
-function selectAnswer(index) {
-
-  const question =
-    examQuestions[currentExam][currentQuestion];
-
-
-  if (index === question.answer) {
-    examScore++;
-  }
-
-
-  currentQuestion++;
-
-  renderQuestion();
-}
-
-
-function finishExam() {
-
-  examsCompleted++;
-
-  const earnedPoints =
-    examScore * 30;
-
-
-  points += earnedPoints;
-
-
-  localStorage.setItem(
-    STORAGE.exams,
-    examsCompleted
-  );
-
-  localStorage.setItem(
-    STORAGE.points,
-    points
+document
+  .querySelector(".modal-overlay")
+  .addEventListener(
+    "click",
+    closeAuthModal
   );
 
 
-  updateDashboard();
+showRegisterBtn.addEventListener(
+  "click",
+  () => showRegister()
+);
 
 
-  const total =
-    examQuestions[currentExam].length;
+showLoginBtn.addEventListener(
+  "click",
+  () => showLogin()
+);
 
 
-  const percentage =
-    Math.round(
-      (examScore / total) * 100
-    );
-
-
-  document.getElementById("examContent")
-    .innerHTML = `
-
-      <div class="result-box">
-
-        <div class="section-label">
-          انتهى الاختبار
-        </div>
-
-        <h2>أحسنت! 🎉</h2>
-
-        <div class="result-score">
-          ${percentage}%
-        </div>
-
-        <p>
-          حصلت على ${examScore} من ${total}
-          إجابات صحيحة.
-        </p>
-
-        <p style="margin-top:8px;color:#667085;font-size:12px;">
-          +${earnedPoints} نقطة
-        </p>
-
-        <button
-          class="primary-btn"
-          style="margin-top:20px;width:100%;"
-          onclick="closeModal('examModal')"
-        >
-          العودة للمنصة
-        </button>
-
-      </div>
-
-    `;
-
-
-  showToast(
-    "تم تسجيل نتيجتك وإضافة النقاط 🏆"
-  );
-}
-
-
-/* ================= MODAL CONTROL ================= */
-
-function closeModal(id) {
-
-  const modal =
-    document.getElementById(id);
-
-  if (modal) {
-    modal.classList.remove("show");
-  }
-}
-
-
-/* ================= OUTSIDE CLICK ================= */
-
-document.querySelectorAll(".modal").forEach(modal => {
-
-  modal.addEventListener("click", function(event) {
-
-    if (event.target === this) {
-      this.classList.remove("show");
-    }
-
-  });
-
-});
-
-
-/* ================= ESCAPE ================= */
-
-document.addEventListener("keydown", function(event) {
-
-  if (event.key === "Escape") {
-
-    document.querySelectorAll(".modal")
-      .forEach(modal => {
-        modal.classList.remove("show");
-      });
-
-  }
-
-});
-
-
-/* ================= TOAST ================= */
-
-let toastTimer;
-
+// =========================================
+// TOAST
+// =========================================
 
 function showToast(message) {
 
-  const toast =
-    document.getElementById("toast");
-
-  const toastMessage =
-    document.getElementById("toastMessage");
-
-
-  if (!toast || !toastMessage) return;
-
-
-  toastMessage.textContent = message;
+  toast.textContent = message;
 
   toast.classList.add("show");
 
+  setTimeout(() => {
 
-  clearTimeout(toastTimer);
+    toast.classList.remove(
+      "show"
+    );
 
-
-  toastTimer =
-    setTimeout(() => {
-
-      toast.classList.remove("show");
-
-    }, 3000);
+  }, 3000);
 }
 
 
-/* ================= ADMIN ACTIONS ================= */
+// =========================================
+// ERROR TRANSLATION
+// =========================================
 
-async function addNewLesson() {
-  const subjectKey = document.getElementById("adminSubjectSelect").value;
-  const title = document.getElementById("adminLessonTitle").value.trim();
-  const duration = document.getElementById("adminLessonDuration").value.trim();
+function getAuthErrorMessage(message) {
 
-  if (!title) {
-    showToast("يرجى كتابة عنوان الدرس ⚠️");
-    return;
+  const text =
+    String(message || "")
+      .toLowerCase();
+
+  if (
+    text.includes("invalid login credentials")
+  ) {
+
+    return "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
+
   }
 
-  // إضافة الدرس للمصفوفة المحتفظة بالبيانات في الشاشة
-  if (subjects[subjectKey]) {
-    subjects[subjectKey].lessons.push(title);
+  if (
+    text.includes("user already registered")
+  ) {
+
+    return "هذا البريد الإلكتروني مسجل بالفعل.";
+
   }
 
-  // حفظ الدرس في قاعدة البيانات Supabase
-  if (supabaseClient) {
-    try {
-      await supabaseClient.from('lessons').insert([
-        { subject: subjectKey, title: title, duration: duration }
-      ]);
-    } catch (e) {
-      console.log("تم الحفظ محليًا فقط");
+  if (
+    text.includes("password should be at least")
+  ) {
+
+    return "كلمة المرور قصيرة جدًا.";
+
+  }
+
+  if (
+    text.includes("email not confirmed")
+  ) {
+
+    return "يجب تأكيد البريد الإلكتروني أولًا.";
+
+  }
+
+  return message ||
+    "حدث خطأ، حاول مرة أخرى.";
+}
+
+
+// =========================================
+// SECURITY HELPERS
+// =========================================
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+function safeUrl(value) {
+
+  try {
+
+    const url =
+      new URL(value);
+
+    if (
+      url.protocol === "https:" ||
+      url.protocol === "http:"
+    ) {
+
+      return url.href;
+
     }
+
+  } catch (error) {
+
+    return "#";
+
   }
 
-  // تنظيف الخانات وإظهار إشعار
-  document.getElementById("adminLessonTitle").value = "";
-  document.getElementById("adminLessonDuration").value = "";
-  
-  showToast("تمت إضافة الدرس بنجاح! 🎉");
+  return "#";
 }
 
 
-/* ================= INIT ================= */
+// =========================================
+// START
+// =========================================
 
-document.addEventListener("DOMContentLoaded", () => {
+loadTheme();
 
-  updateDashboard();
-
-  showPage("home");
-
-});
-
+checkCurrentUser();
